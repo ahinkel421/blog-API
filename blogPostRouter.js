@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
 
 router.post('/', jsonParser, (req, res) => {
 	const requiredFields = ['title', 'content', 'author'];
-	//console.log(req.body)
+
 	for (let i = 0; i < requiredFields.length; i++) {
 		const field = requiredFields[i];
 		if (!(field in req.body)) {
@@ -29,7 +29,6 @@ router.post('/', jsonParser, (req, res) => {
 		}
 	}
 	const item = BlogPosts.create(req.body.title, req.body.content, req.body.author, req.body.publishDate);
-	//console.log(item)
 	res.status(201).json(item);
 });
 
