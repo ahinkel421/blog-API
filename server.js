@@ -69,7 +69,7 @@ app.post('/posts', (req, res) => {
 app.put('posts/:id', (req, res) => {
 	if(!(req.params.id && req.body.id && req.params.id === req.body.id)) {
 		const message = (
-			`Request path id (${req.params.id}) and request body id ` + 
+			`Request path id (${req.params.id}) and request body id ` +
 			`(${req.body.id}) must match`);
 		console.error(message);
 		res.status(400).json({message: message});
@@ -123,17 +123,16 @@ function runServer(databaseUrl = DATABASE_URL, port= PORT) {
 }
 
 function closeServer() {
-	return mongoose.disconnect().then(() => {
-		return new Promise((resolve, reject) => {
-			console.log('Closing server');
-			server.close(err => {
-				if (err) {
-					return reject(err);
-				}
-				resolve();
-			});
-		});
-	});
+  return new Promise((resolve, reject) => {
+    console.log('Closing server');
+    server.close(err => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve();
+    });
+  });
 }
 
 if (require.main === module) {
@@ -141,6 +140,3 @@ if (require.main === module) {
 }
 
 module.exports = {app, runServer, closeServer};
-
-
-
