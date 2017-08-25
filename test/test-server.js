@@ -16,9 +16,11 @@ describe('blogPost', function() {
 	});
 
 	it('should list blog posts on GET', function() {
+
 		return chai.request(app)
 		.get('/blog-posts')
 		.then(function(res) {
+
 			res.should.have.status(200);
 			res.should.be.json;
 			res.body.should.be.a('array');
@@ -33,18 +35,29 @@ describe('blogPost', function() {
 	});
 
 	it('should add a new blog post on POST', function() {
-		const newBlogPost = {title: 'My photography trip', content: "I took a trip to take a bunch of pictures and stuff. The end.", author: "John Doe"};
+		const newBlogPost = {
+			title: 'My photography trip',
+			content: "I took a trip to take a bunch of pictures and stuff. The end.",
+			author: "John Doe"
+		};
 		return chai.request(app)
 		.post('/blog-posts')
 		.send(newBlogPost)
 		.then(function(res) {
+
+			// Tests the request status
 			res.should.have.status(201);
 			res.should.be.json;
+
+			// Test the form.
 			res.body.should.be.a('object');
 			res.body.should.include.keys('id', 'title', 'content', 'author');
 			res.body.id.should.not.be.null;
 
-			res.body.should.deep.equal(Object.assign(newBlogPost, {id: res.body.id}));
+			// Tests data
+			res.body.title.should.equal(newBlogPost.title);
+      res.body.content.should.equal(newBlogPost.content);
+      res.body.author.should.equal(newBlogPost.author)
 		});
 	});
 
@@ -62,11 +75,16 @@ describe('blogPost', function() {
 			});
 
 			return chai.request(app)
-			.put(`/blog-posts/${res.body[0].id}`)
+			.put(  `/blog-posts/${res.body[0].id}` )
 			.send(updateData)
 			.then(function(res) {
 				res.should.have.status(200);
+				// Tests data
+				res.body.title.should.equal(updateData.title);
+	      res.body.content.should.equal(updateData.content);
+	      res.body.author.should.equal(updateData.author)
 			});
+
 		});
 	});
 
@@ -82,6 +100,3 @@ describe('blogPost', function() {
 		});
 	});
 });
-
-
-

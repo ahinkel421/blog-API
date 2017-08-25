@@ -33,6 +33,7 @@ function closeServer() {
       resolve();
     });
   });
+}
 
 if (require.main === module) {
   runServer().catch(err => console.error(err));
